@@ -7,11 +7,11 @@ describe("/POST user", () => {
         test("Status code of register return 200", async () => {
             const response = await request(app).post('/api/user/register').send(
                 {
-                    "name": "Matteo users",
-                    "email" : "dave@dave.it",
-                    "password": "users",
+                    "name": "Admin di test",
+                    "email" : "admin@admin.it",
+                    "password": "admin",
                     "roles" : {
-                        "Users": "users"
+                        "ADMIN": "admin"
                     }
                 }
             )
@@ -22,11 +22,11 @@ describe("/POST user", () => {
         test("Content Type must be a json", async () => {
             const response = await request(app).post('/api/user/register').send(
                 {
-                    "name": "Matteo users",
-                    "email" : "dave@dave.it",
+                    "name": "User di test",
+                    "email" : "users@users.it",
                     "password": "users",
                     "roles" : {
-                        "Users": "users"
+                        "USERS": "users"
                     }
                 }
             )
@@ -38,7 +38,7 @@ describe("/POST user", () => {
             const response = await request(app).post('/api/user/login').send(
                 {
                     "email" : "admin@admin.it",
-                    "password": "password"
+                    "password": "admin"
                 }
             )
             expect(response.statusCode).toBe(200)
@@ -46,8 +46,8 @@ describe("/POST user", () => {
         test("Check if content type is json", async () => {
             const response = await request(app).post('/api/user/login').send(
                 {
-                    "email" : "admin@admin.it",
-                    "password": "password"
+                    "email" : "users@users.it",
+                    "password": "users"
                 }
             )
             expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
@@ -64,7 +64,7 @@ describe("/POST Token", () => {
             .send(
                 {
                     "token" : "",
-                    "created_by" : "2022-05-05"
+                    "created_by" : "2022-05-10"
                 }
             )
             expect(response.statusCode).toBe(401)
@@ -75,7 +75,7 @@ describe("/POST Token", () => {
             .send(
                 {
                     "token" : "",
-                    "created_by" : "2022-05-05"
+                    "created_by" : "2022-05-10"
                 }
             )
             expect(response.statusCode).toBe(200)
@@ -133,7 +133,7 @@ describe("/POST Password", () => {
             const response = await request(app).post('/api/password/forgot-password')
             .send(
                 {
-                    "mail" : "m.deblasis@outlook.it"
+                    "mail" : "test@test.it"
                 }
             )
             expect(response.statusCode).toBe(422)
@@ -142,7 +142,7 @@ describe("/POST Password", () => {
             const response = await request(app).post('/api/password/forgot-password')
             .send(
                 {
-                    "email" : "m.deblasis@outlook.it"
+                    "email" : "test@test.it"
                 }
             )
             expect(response.statusCode).toBe(404)
@@ -170,17 +170,17 @@ describe("/POST Password", () => {
             )
             expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
         })
-        // test("Se il token é revocato deve tornare 401", async () => {
-        //     const response = await request(app).post('/api/password/reset-password')
-        //     .send(
-        //         {
-        //             "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjczY2UxNGMzMjk0ODk1ZGRiNDJkYmUiLCJpYXQiOjE2NTE4Nzg1MzIsImV4cCI6MTY1MTg4MjEzMn0.aVKrYaq-zvpUwruxZWrUx8PE6k3rRxJUbj2ruEHL2rg",
-        //             "password" : "password",
-        //             "password_confirmation": "password"
-        //         }
-        //     )
-        //     expect(response.statusCode).toBe(401)
-        // })
+        test("Se il token é revocato deve tornare 401", async () => {
+            const response = await request(app).post('/api/password/reset-password')
+            .send(
+                {
+                    "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjczY2UxNGMzMjk0ODk1ZGRiNDJkYmUiLCJpYXQiOjE2NTE4Nzg1MzIsImV4cCI6MTY1MTg4MjEzMn0.aVKrYaq-zvpUwruxZWrUx8PE6k3rRxJUbj2ruEHL2rg",
+                    "password" : "password",
+                    "password_confirmation": "password"
+                }
+            )
+            expect(response.statusCode).toBe(401)
+        })
     })
 })
 
